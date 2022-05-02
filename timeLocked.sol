@@ -64,14 +64,12 @@ contract timelocked{
             if(timePoints[msgSender][count]==1){
                 count++; continue;
             } 
-
             else if(amounts[msgSender][count]< toBeWithdrawn){
                 toBeWithdrawn-=amounts[msgSender][count];
                 amounts[msgSender][count]=0;
                 timePoints[msgSender][count]=1;
                 count++; continue;
             }
-
             else if(amounts[msgSender][count]>=toBeWithdrawn){
                 amounts[msgSender][count]-=toBeWithdrawn;
                 toBeWithdrawn=0;
@@ -121,17 +119,14 @@ contract timelocked{
             if(timePoints[adr][count]==0) {
                 break;
             }
-
             //withdrawn tx, the amount is 0 no need to go further
             else if(timePoints[adr][count]==1) {
                 count++; continue;
             }
-
             //if the deposit was made more than a week ago
             else if(jetzt - timePoints[adr][count] >= lockTime){
                 amnt+= amounts[adr][count];
             }
-
             //if the deposit was not made more than a week ago
             else{
                 break;
