@@ -31,8 +31,8 @@ contract timelocked{
     uint256 private percentage;
     address private owner;
 
-    //specifies the locktime in seconds and the cut 
-    //percentage in case of an early withdraw 
+    /*specifies the locktime in seconds and the  
+      cut percentage in case of an early withdraw*/
     constructor(uint256 defineLockTime, uint256 cutPercentage){
         lockTime=defineLockTime;
         percentage= cutPercentage;
@@ -123,11 +123,11 @@ contract timelocked{
             else if(timePoints[adr][count]==1) {
                 count++; continue;
             }
-            //if the deposit was made more than a week ago
+            //if the deposit was made more than the locktime
             else if(jetzt - timePoints[adr][count] >= lockTime){
                 amnt+= amounts[adr][count];
             }
-            //if the deposit was not made more than a week ago
+            //if the deposit was not made more than the locktime
             else{
                 break;
             }
