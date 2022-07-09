@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.10;
-
 contract timelocked{
     bool internal locked;
     modifier noReentrant() {
@@ -20,7 +19,7 @@ contract timelocked{
     //the address(for example: if it is the first transaction of the address(msg.sender) 
     //then the count is 0, if it is the second tx than the count of  the second transaction
     //is 1...
-
+    
     //an address deposits--> block.timestamp is added to timepoints just like in the amounts
     // example: the address 0xabc(symbolic) deposits 1Eth in block.timestamp of  
     mapping(address => mapping(uint256 => uint256)) private  amounts;
@@ -41,19 +40,16 @@ contract timelocked{
 
     function deposit() public payable noReentrant{
         uint256 lastTx= numberOfTx[address(msg.sender)];
-    
         balances[address(msg.sender)]+= msg.value;
         amounts[address(msg.sender)][lastTx]= msg.value;
         timePoints[address(msg.sender)][lastTx]= block.timestamp;
         numberOfTx[address(msg.sender)]= ++lastTx;
     }
 
-   
     function myTotalBalance() public view returns(uint256) {
-       return balances[msg.sender];
+        return balances[msg.sender];
     }
     
-
     function withdrawLoop(uint256 withdrawWeis) internal{
         address msgSender= msg.sender;
         uint256 count;
@@ -78,7 +74,6 @@ contract timelocked{
         }
     }
      
-
     function withdraw(uint256 withdrawWeis) public payable noReentrant{
         address msgSender= msg.sender;
         uint256 available= withdrawableAmountOfAdress(msgSender) ;
@@ -92,9 +87,7 @@ contract timelocked{
         balances[msgSender]-=toBeWithdrawn;
         withdrawLoop(toBeWithdrawn);
     }  
-            
-   
-
+      
     function withdrawEarly(uint256 withdrawWeis) public payable noReentrant{
         address msgSender= msg.sender;
         uint256 available= withdrawableAmountOfAdress(msgSender);
@@ -108,7 +101,6 @@ contract timelocked{
         balances[msgSender]-=toBeWithdrawn;
         withdrawLoop(toBeWithdrawn);
     }
-
 
     function withdrawableAmountOfAdress(address adr) private view returns(uint256){
         uint256 jetzt= block.timestamp;
